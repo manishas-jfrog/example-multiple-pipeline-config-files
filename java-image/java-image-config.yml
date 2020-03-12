@@ -23,7 +23,7 @@ pipelines:
         type: DockerBuild
         configuration:
           dockerFileLocation: .
-          dockerFileName: java_image/Dockerfile
+          dockerFileName: ./java_image/Dockerfile
           dockerImageName: manishas.jfrog.io/docker-local/java_image
           dockerImageTag: ${run_number}
           inputResources:
