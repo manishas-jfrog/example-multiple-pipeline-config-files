@@ -1,127 +1,49 @@
 resources:
-  - name: repo_1_docker_build_push
+  - name: repo_java_image
     type: GitRepo
     configuration:
       gitProvider: manishas_github   # replace with your integration
-      path: manishas-jfrog/jfrog-pipelines-docker-build-push    # replace with your repository name
+      path: manishas-jfrog/example-multiple-pipeline-config-files    # replace with your repository name
       branches:
         include: master
+      files:
+        include: ^java-image\/.+
 
-  - name: build_info_1_docker_build_push
+  - name: bi_java
     type: BuildInfo
     configuration:
       sourceArtifactory: demoArt
-      buildName: svc_build
+      buildName: java_image
       buildNumber: 1
-
-  - name: promoted_build_info
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: demoArt
-      buildName: svc_build
-      buildNumber: 1
-
-  # - name: releaseBundle
-  #   type: ReleaseBundle
-  #   configuration:
-  #     sourceDistribution: demoDist
-  #     name: demo_rb
-  #     version: v1.0.0
-  #
-  # - name: signedBundle
-  #   type: ReleaseBundle
-  #   configuration:
-  #     sourceDistribution: demoDist
-  #     name: demo_rb
-  #     version: v1.0.0
-  #
-  # - name: distributionRules
-  #   type: DistributionRule
-  #   configuration:
-  #     sourceDistribution: demoDist
-  #     serviceName: "*"
-  #     siteName: "*"
-  #     cityName: "*"
-  #     countryCodes:
-  #       - "CN"
-  #       - "GB"
 
 pipelines:
-  - name: pipeline_docker_build_push
+  - name: pipeline_build_java_image
     steps:
-      - name: docker_build
+      - name: docker_build_java
         type: DockerBuild
         configuration:
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: 34.68.55.176:8082/docker-local/alpine37
+          dockerImageName: manishas.jfrog.io/docker-local/java_image
           dockerImageTag: ${run_number}
           inputResources:
-            - name: repo_1_docker_build_push
+            - name: repo_java_image
           integrations:
             - name: demoArt
 
-      - name: docker_push
+      - name: docker_push_java
         type: DockerPush
         configuration:
           targetRepository: docker-local
           integrations:
             - name: demoArt
           inputSteps:
-            - name: docker_build
+            - name: docker_build_java
 
       - name: publish_build_info
         type: PublishBuildInfo
         configuration:
           inputSteps:
-            - name: docker_push
+            - name: docker_push_java
           outputResources:
-            - name: build_info_1_docker_build_push
-
-      - name: promote_build
-        type: PromoteBuild
-        configuration:
-          targetRepository: promoted-pipelines
-          integrations:
-            - name: demoArt
-          inputResources:
-            - name: build_info_1_docker_build_push
-          outputResources:
-            - name: promoted_build_info
-
-  # - name: demo_release
-  #   steps:
-  #     - name: bundle
-  #       type: CreateReleaseBundle
-  #       configuration:
-  #         releaseBundleName: demo_rb
-  #         releaseBundleVersion: v1.0.${run_number}
-  #         dryRun: false
-  #         sign: false
-  #         description: "this is a demo bundle"
-  #         inputResources:
-  #           - name: promoted_build_info
-  #             trigger: false
-  #         outputResources:
-  #           - name: releaseBundle
-  #         releaseNotes:
-  #           syntax: markdown
-  #           content: |
-  #             ## Heading
-  #               * firstBullet
-  #               * secondBullet
-  #     - name: sign
-  #       type: SignReleaseBundle
-  #       configuration:
-  #         inputResources:
-  #           - name: releaseBundle
-  #         outputResources:
-  #           - name: signedBundle
-  #
-  #     - name: distribute
-  #       type: DistributeReleaseBundle
-  #       configuration:
-  #         dryRun: false
-  #         inputResources:
-  #           - name: signedBundle
-  #           - name: distributionRules
+            - name: bi_java
