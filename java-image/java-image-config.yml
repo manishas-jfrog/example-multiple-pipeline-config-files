@@ -30,6 +30,10 @@ pipelines:
             - name: repo_java_image
           integrations:
             - name: demoArt
+        execution:
+          onStart:
+            - cd $res_repo_java_image_resourcePath
+            - ls
 
       - name: docker_push_java
         type: DockerPush
