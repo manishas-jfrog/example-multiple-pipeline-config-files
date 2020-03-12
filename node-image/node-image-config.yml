@@ -23,8 +23,8 @@ pipelines:
       - name: docker_build_node
         type: DockerBuild
         configuration:
-          dockerFileLocation: .
-          dockerFileName: ./node_image/Dockerfile
+          dockerFileLocation: ./node_image
+          dockerFileName: Dockerfile
           dockerImageName: manishas.jfrog.io/docker-local/node_image
           dockerImageTag: ${run_number}
           inputResources:
