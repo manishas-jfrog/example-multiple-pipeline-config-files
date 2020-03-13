@@ -22,6 +22,7 @@ pipelines:
       - name: docker_build_java
         type: DockerBuild
         configuration:
+          affinityGroup: dockerGroup
           dockerFileLocation: ./java-image
           dockerFileName: Dockerfile
           dockerImageName: manishas.jfrog.io:8082/docker-local/java_image
@@ -38,6 +39,7 @@ pipelines:
       - name: docker_push_java
         type: DockerPush
         configuration:
+          affinityGroup: dockerGroup
           targetRepository: docker-local
           integrations:
             - name: demoArt
@@ -47,6 +49,7 @@ pipelines:
       - name: publish_build_info
         type: PublishBuildInfo
         configuration:
+          affinityGroup: dockerGroup
           inputSteps:
             - name: docker_push_java
           outputResources:
