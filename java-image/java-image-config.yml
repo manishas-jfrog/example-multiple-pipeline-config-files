@@ -24,7 +24,7 @@ pipelines:
         configuration:
           dockerFileLocation: ./java-image
           dockerFileName: Dockerfile
-          dockerImageName: manishas.jfrog.io/docker-local/java_image
+          dockerImageName: manishas.jfrog.io:8082/docker-local/java_image
           dockerImageTag: ${run_number}
           inputResources:
             - name: repo_java_image
