@@ -26,7 +26,7 @@ pipelines:
           affinityGroup: dockerGroup
           dockerFileLocation: ./node-image
           dockerFileName: Dockerfile
-          dockerImageName: manishas.jfrog.io:8082/docker-local/node_image
+          dockerImageName: pipe-master.jfrog.info:8082/docker-local/node_image
           dockerImageTag: ${run_number}
           inputResources:
             - name: repo_node_image

@@ -25,7 +25,7 @@ pipelines:
           affinityGroup: dockerGroup
           dockerFileLocation: ./java-image
           dockerFileName: Dockerfile
-          dockerImageName: manishas-docker-local/java_image
+          dockerImageName: pipe-master.jfrog.info:8082/java_image
           dockerImageTag: ${run_number}
           inputResources:
             - name: repo_java_image
