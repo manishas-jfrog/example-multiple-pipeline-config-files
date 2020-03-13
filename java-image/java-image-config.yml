@@ -25,7 +25,7 @@ pipelines:
           affinityGroup: dockerGroup
           dockerFileLocation: ./java-image
           dockerFileName: Dockerfile
-          dockerImageName: pipe-master.jfrog.info:8082/java_image
+          dockerImageName: pipe-master.jfrog.info:8082/java-image
           dockerImageTag: ${run_number}
           inputResources:
             - name: repo_java_image
